@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrar Productos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="CSS/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <!-- Barra de información -->
+    <div class="row bg-light" style="text-align:center; color: rgb(83, 82, 82); padding: 20px;">
+        <div class="col-sm-4">I    VITRINEA DESDE CASA    I</div>
+        <div class="col-sm-4">I    RECIBE EN TU DOMICILIO    I</div>
+        <div class="col-sm-4">I    RETIRA EN TIENDA    I</div>
+    </div>
+
+    <!-- Barra de búsqueda -->
+    <div class="container mt-3">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Buscar producto por nombre" aria-label="Buscar producto por nombre" aria-describedby="button-addon2">
+            <button class="btn btn-outline-secondary" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
+        </div>
+    </div>
+
+    <!-- Botón para añadir producto -->
+    <div class="container mb-3">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProductModal">Añadir Producto</button>
+    </div>
+
+    <!-- Tabla de Productos -->
+    <div class="container">
+        <h2>Tabla de Productos</h2>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Imagen</th>
+                        <th>Tipo</th>
+                        <th>Tamaño</th>
+                        <th>Centímetros</th>
+                        <th>Dinero</th>
+                        <th>Descripción</th>
+                        <th>Modificar</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><img src="imagen1.jpg" alt="Producto 1" style="width: 100px;"></td>
+                        <td>Anillo</td>
+                        <td>Grande</td>
+                        <td>5 cm</td>
+                        <td>$50.000</td>
+                        <td>Descripción del producto 1</td>
+                        <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modifyProductModal">Modificar</button></td>
+                        <td><button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteProductConfirmationModal">Eliminar</button></td>
+                    </tr>
+                    <!-- Agrega más filas según sea necesario -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal para añadir producto -->
+    <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addProductModalLabel">Añadir Producto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Formulario para agregar producto -->
+                    <div class="container product-container">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="image" class="form-label">Imagen:</label>
+                                    <input type="file" class="form-control" id="image" required accept="image/*">
+                                    <div class="mt-3">
+                                        <img id="preview" class="img-fluid" alt="Vista previa de la imagen">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <form id="productForm">
+                                    <div class="mb-3">
+                                        <label for="type" class="form-label">Tipo:</label>
+                                        <select class="form-select" id="type" required>
+                                            <option value="">Seleccionar...</option>
+                                            <option value="anillo">Anillo</option>
+                                            <option value="aro">Aro</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="size" class="form-label">Tamaño:</label>
+                                        <select class="form-select" id="size" required disabled>
+                                            <option value="">Seleccionar...</option>
+                                            <option value="grande">Grande</option>
+                                            <option value="mediano">Mediano</option>
+                                            <option value="pequeño">Pequeño</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="centimeters" class="form-label">Centímetros:</label>
+                                        <input type="text" class="form-control" id="centimeters" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="money" class="form-label">Dinero:</label>
+                                        <input type="text" class="form-control" id="money" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="description" class="form-label">Descripción:</label>
+                                        <textarea class="form-control" id="description" rows="3" required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Agregar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (requerido para los componentes de Bootstrap) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById("image").addEventListener("change", function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById("preview").src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById("type").addEventListener("change", function() {
+            const type = this.value;
+            const sizeSelect = document.getElementById("size");
+            if (type === "anillo" || type === "aro") {
+                sizeSelect.disabled = false;
+            } else {
+                sizeSelect.value = "";
+                sizeSelect.disabled = true;
+            }
+        });
+
+        document.getElementById("productForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            var image = document.getElementById("image").files[0];
+            var money = document.getElementById("money").value;
+            var description = document.getElementById("description").value;
+            var size = document.getElementById("size").value;
+            var type = document.getElementById("type").value;
+            var centimeters = document.getElementById("centimeters").value;
+
+            // Construir mensaje de confirmación
+            var confirmationMessage = "<p><strong>Tipo:</strong> " + type + "</p>";
+            confirmationMessage += "<p><strong>Tamaño:</strong> " + size + "</p>";
+            confirmationMessage += "<p><strong>Centímetros:</strong> " + centimeters + "</p>";
+            confirmationMessage += "<p><strong>Dinero:</strong> " + money + "</p>";
+            confirmationMessage += "<p><strong>Descripción:</strong> " + description + "</p>";
+
+            // Mostrar modal de confirmación
+            var confirmationModal = new bootstrap.Modal(document.getElementById("confirmationModal"));
+            document.getElementById("confirmationMessage").innerHTML = confirmationMessage;
+            confirmationModal.show();
+        });
+
+        document.getElementById("confirmButton").addEventListener("click", function() {
+            alert("Producto agregado exitosamente.");
+            document.getElementById("productForm").reset();
+            var previewImage = document.getElementById("preview");
+            previewImage.src = "";
+            previewImage.alt = "Vista previa de la imagen";
+            var confirmationModal = bootstrap.Modal.getInstance(document.getElementById("confirmationModal"));
+            confirmationModal.hide();
+        });
+    </script>
+
+    <!-- Modal de confirmación -->
+    <div class="modal fade" id="confirmationModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="confirmationMessage"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-outline-secondary mx-2" id="confirmButton">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
